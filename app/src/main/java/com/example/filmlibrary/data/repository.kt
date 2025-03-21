@@ -78,7 +78,7 @@ class Series(
 ): Production(title, genre, releaseDate, isWatched, comment, rate){
     override fun toString(): String {
         return super.toString() +
-                "parts: ${parts.forEach{println(it)}}"
+                "parts: ${parts.entries.joinToString {"${it.key}:${it.value}"}}"
     }
 }
 
