@@ -5,37 +5,26 @@ import java.time.LocalDate
 import java.util.Date
 
 enum class Genre {
-    DRAMA, COMEDY, ACTION, THRILLER, HORROR, DOCUMENTARY
+    DRAMA, COMEDY, ACTION, THRILLER, HORROR, DOCUMENTARY, ROMANCE, FANTASY
 }
 
 open class Production(
-    title: String,
-    genre: Genre,
-    releaseDate: LocalDate,
+    var title: String,
+    var genre: Genre,
+    var releaseDate: LocalDate,
     var isWatched: Boolean = false,
-    comment: String? = null,
-    rate: Int? = null,
+    var comment: String? = null,
+    var rate: Int? = null,
 ){
-    var title: String = title
-        private set
-
-    var genre: Genre = genre
-        private set
-
-    var releaseDate: LocalDate = releaseDate
-        private set
-
-    var comment: String? = comment
-        set(value){
-            if(value.isNullOrBlank())
-                throw IllegalArgumentException("can't set empty comment")
-            field = value
+    init {
+        if (rate != null && (rate !in 1..10)) {
+            throw IllegalArgumentException("rate has to be in 1..10")
         }
-    var rate: Int? = rate
-        set(value){
-            if (value !in 1..10 || value == null)
-                throw IllegalArgumentException("rate has to be in 1..10")
+
+        if (comment != null && comment!!.isBlank()) {
+            throw IllegalArgumentException("can't set empty comment")
         }
+    }
 
     override fun toString(): String {
         return """
@@ -48,8 +37,6 @@ open class Production(
                         rate: $rate
         """.trimIndent()
     }
-
-
 }
 
 class Movie(
@@ -90,7 +77,7 @@ fun getProductions() =
             releaseDate = LocalDate.of(2010, 7, 30),
             isWatched = true,
             comment = "I was shocked during that movie",
-            rate = 11,
+            rate = 10,
             durationInMinutes = 148
         ),
         Movie(
@@ -109,6 +96,33 @@ fun getProductions() =
             isWatched = true,
             rate = 8,
             durationInMinutes = 132
+        ),
+        Movie(
+            title = "Challengers",
+            genre = Genre.ROMANCE,
+            releaseDate = LocalDate.of(2024, 4, 26),
+            isWatched = true,
+            comment = "Ehh that ending...",
+            rate = 7,
+            durationInMinutes = 131
+        ),
+        Movie(
+            title = "The Substance",
+            genre = Genre.HORROR,
+            releaseDate = LocalDate.of(2024, 9, 20),
+            isWatched = true,
+            comment = "Disgusting CGI - very good body horror",
+            rate = 9,
+            durationInMinutes = 140
+        ),
+        Movie(
+            title = "Heretics",
+            genre = Genre.HORROR,
+            releaseDate = LocalDate.of(2024, 11, 8),
+            isWatched = true,
+            comment = "lack of action but very interesting plot. Unfortunately fatal ending",
+            rate = 7,
+            durationInMinutes = 111
         ),
         Series(
             title = "The Vikings",
@@ -136,6 +150,33 @@ fun getProductions() =
             comment = "really masterpiece",
             rate = 10,
             parts = mapOf(1 to 6, 2 to 6, 3 to 6, 4 to 6, 5 to 6, 6 to 6)
+        ),
+        Series(
+            title = "The Witcher",
+            genre = Genre.FANTASY,
+            releaseDate = LocalDate.of(2019, 12, 20),
+            isWatched = true,
+            comment = "one man makes this series watchable - Henry Cavill",
+            rate = 6,
+            parts = mapOf(1 to 8, 2 to 8, 3 to 8)
+        ),
+        Series(
+            title = "Black Mirror",
+            genre = Genre.THRILLER,
+            releaseDate = LocalDate.of(2011, 12, 4),
+            isWatched = true,
+            comment = "every piece makes you fill bad and influence you to think about human behaviour",
+            rate = 9,
+            parts = mapOf(1 to 3, 2 to 4, 3 to 6, 4 to 6, 5 to 3, 6 to 5, 7 to 6)
+        ),
+        Series(
+            title = "Love, Death & Robots",
+            genre = Genre.THRILLER,
+            releaseDate = LocalDate.of(2019, 3, 15),
+            isWatched = true,
+            comment = "very similar to black mirror, but really beautiful animations",
+            rate = 9,
+            parts = mapOf(1 to 18, 2 to 8, 3 to 9)
         ),
     )
 
